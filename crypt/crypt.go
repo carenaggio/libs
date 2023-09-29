@@ -211,6 +211,10 @@ func (pk *PublicKey) Verify(data []byte) bool {
 	var message SignedMessage
 	var err error
 
+	if err = json.Unmarshal(data, &message); err != nil {
+		return false
+	}
+
 	if err = rsa.VerifyPSS(&pk.publicKey, crypto.SHA512, message.HashSum, message.Signature, nil); err != nil {
 		return false
 	}
